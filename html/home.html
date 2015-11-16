@@ -1,0 +1,120 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0; ">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<style>
+.big-button{
+	display: inline-block;
+	padding:40px;
+	border: 2px solid #888;
+	border-radius: 20px;
+	width: 90px;
+	height: 90px;
+	font-size: 84px;
+	font-weight: 900;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+*:not(input):not(textarea) {
+  -webkit-user-select: none; /* disable selection/Copy of UIWebView */
+  -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
+}
+
+html {
+-ms-touch-action: manipulation;
+touch-action: manipulation;
+}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript">
+(function($) {
+  var IS_IOS = /iphone|ipad/i.test(navigator.userAgent);
+  $.fn.nodoubletapzoom = function() {
+    if (IS_IOS)
+      $(this).bind('touchstart', function preventZoom(e) {
+        var t2 = e.timeStamp
+          , t1 = $(this).data('lastTouch') || t2
+          , dt = t2 - t1
+          , fingers = e.originalEvent.touches.length;
+        $(this).data('lastTouch', t2);
+        if (!dt || dt > 500 || fingers > 1) return; // not double-tap
+
+        e.preventDefault(); // double tap - prevent the zoom
+        // also synthesize click events we just swallowed up
+        $(this).trigger('click').trigger('click');
+      });
+  };
+})(jQuery);
+
+$(document).ready(function(){
+
+	var ua = navigator.userAgent,
+	    event = (ua.match(/iPhone/i)) ? "touchstart" : "mousedown";
+
+	// $("theElement").bind(event, function(e) {
+	//     //do shit here
+	// }
+
+	// $(".big-button").mousedown(function(){
+	// 	$(this)
+	// 		.css({background: "#888"})
+	// 		.hide();
+	// })
+	// $(".big-button").mouseup(function(){
+	// 	$(this).css({background: "#fff"})
+	// })
+
+	$(".big-button").bind(event, function(e){
+		$(this).css({background: "#888"})
+		$.getJSON('/command/', {
+			type : $(this).attr('id'),
+			state : 'start'
+		}, function(){});
+		event.preventDefault();
+	})
+	$(".big-button").mouseup(function(){
+		$(this).css({background: "#fff"})
+		$.getJSON('/command/', {
+			type : $(this).attr('id'),
+			state : 'stop'
+		}, function(){});
+		event.preventDefault();
+	})
+	$(".big-button").on('touchend', function(e){
+		$(this).css({background: "#fff"})
+		$.getJSON('/command/', {
+			type : $(this).attr('id'),
+			state : 'stop'
+		}, function(){});
+		event.preventDefault();
+	})
+
+
+	// $(".big-button").bind({ 'touchstart', function(){
+	// 	$(this)
+	// 		.css({background: "#888"})
+	// 		.hide();
+
+	// 	event.preventDefault();
+	// }})
+	// $(".big-button").bind({ 'touchend', function(){
+	// 	$(this).css({background: "#fff"});
+	// 	event.preventDefault();
+	// }})
+
+	// document.addEventListener('touchstart', function(e) {
+	//     e.preventDefault();
+	//     var touch = e.touches[0];
+	//     alert(touch.pageX + " - " + touch.pageY);
+	// }, false);
+})
+	</script>
+</head>
+<body>
+	<div id="lturn" class="big-button">↰</div>
+	<div id="forward" class="big-button">↑</div>
+	<div id="rturn" class="big-button">↱</div>
+</body>
+</html>
