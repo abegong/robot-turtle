@@ -53,19 +53,6 @@ $(document).ready(function(){
 	var ua = navigator.userAgent,
 	    event = (ua.match(/iPhone/i)) ? "touchstart" : "mousedown";
 
-	// $("theElement").bind(event, function(e) {
-	//     //do shit here
-	// }
-
-	// $(".big-button").mousedown(function(){
-	// 	$(this)
-	// 		.css({background: "#888"})
-	// 		.hide();
-	// })
-	// $(".big-button").mouseup(function(){
-	// 	$(this).css({background: "#fff"})
-	// })
-
 	$(".big-button").bind(event, function(e){
 		$(this).css({background: "#888"})
 		$.getJSON('/command/', {
@@ -91,24 +78,6 @@ $(document).ready(function(){
 		event.preventDefault();
 	})
 
-
-	// $(".big-button").bind({ 'touchstart', function(){
-	// 	$(this)
-	// 		.css({background: "#888"})
-	// 		.hide();
-
-	// 	event.preventDefault();
-	// }})
-	// $(".big-button").bind({ 'touchend', function(){
-	// 	$(this).css({background: "#fff"});
-	// 	event.preventDefault();
-	// }})
-
-	// document.addEventListener('touchstart', function(e) {
-	//     e.preventDefault();
-	//     var touch = e.touches[0];
-	//     alert(touch.pageX + " - " + touch.pageY);
-	// }, false);
 })
 	</script>
 </head>
