@@ -40,6 +40,7 @@ def turn_motor_off():
 def exit_func():
     print "bye bye!"
     if has_gpio:
+        print "xxx"
         GPIO.cleanup()
 
 
